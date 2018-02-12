@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>AngularJS Routing example</title>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 10px;
+        background-color: #F5F5F5;
+      }
+    </style>
+  </head>
+
+  <body ng-app="sampleApp">
+    <div class="container" ng-controller="mainController">
+      <div class="row">
+      	<button type="file" ngf-select="uploadFiles($file, $invalidFiles)"
+          accept="*/*" ngf-max-height="1000" ngf-max-size="1MB">
+      Select File</button>
+  <br><br>
+  File:
+  <div style="font:smaller">{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}
+      <span class="progress" ng-show="f.progress >= 0">
+          <div style="width:{{f.progress}}%"  
+               ng-bind="f.progress + '%'"></div>
+      </span>
+  </div>     
+      </div>
+      <div>
+      	<p>{{file.name}}</p>
+      	<button ng-click="generateDesign(file)"> Get design </button>
+        <img style="max-width:1000px" src="{{imgsrc}}" />
+      </div>
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-route.min.js"></script>
+    <script src="bower_components/ng-file-upload/ng-file-upload.min.js"></script></script>
+
+    <script>
+		// Define an angular module for our app
+		var sampleApp = angular.module('sampleApp', ['ngRoute','ngFileUpload']);
+		// Define routing for app
+		// * / => ListOrdersCtrl
+		// * /new => NewOrderCtrl
+		// * /show/:orderId => ShowOrderCtrl
+		sampleApp.directive("fileread", [function () {
+		    return {
+		        scope: {
+		            fileread: "="
+		        },
+		        link: function (scope, element, attributes) {
+		            element.bind("change", function (changeEvent) {
+		                var reader = new FileReader();
+		                reader.onload = function (loadEvent) {
+		                    scope.$apply(function () {
+		                        scope.fileread = loadEvent.target.result;
+		                    });
+		                }
+		                reader.readAsDataURL(changeEvent.target.files[0]);
+		            });
+		        }
+		    }
+		}]);
+		sampleApp.controller('mainController', function($scope, $http, Upload, $timeout) {
+      $scope.generateDesign = function(file){
+        $http.get('api/designs/generateDesign/'+ file.name).then(function(res){
+          if(res.data){
+            console.log(res.data)
+            $scope.imgsrc = "/api/containers/designs/download/"+res.data
+          }
+        });
+      }
+			$scope.uploadFiles = function(file, errFiles) {
+        	$scope.f = file;
+        	$scope.errFile = errFiles && errFiles[0];
+        	if (file){
+        	    file.upload = Upload.upload({
+        	        url: 'api/containers/designs/upload',
+        	        data: {file: file}
+        	    }).then(function (response) {
+        	        file.result = response.data;
+                  console.log(response.data.result.files);
+        	        $scope.file = response.data.result.files.file[0];
+        	    }, function (response) {
+        	        if (response.status > 0)
+        	            $scope.errorMsg = response.status + ': ' + response.data;
+        	    }, function (evt) {
+        	        file.progress = Math.min(100, parseInt(100.0 * 
+        	                                 evt.loaded / evt.total));
+        	    });
+        	}   
+   			}
+		});
+    </script>
+
+	<!-- Define templates -->
+
+  </body>
+</html>

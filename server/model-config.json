@@ -41,5 +41,9 @@
   "Design": {
     "dataSource": "db",
     "public": true
+  },
+  "container": {
+    "dataSource": "myfile",
+    "public": true
   }
 }
