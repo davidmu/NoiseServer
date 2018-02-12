@@ -1,0 +1,21 @@
+{
+  "name": "NoiseJewelry",
+  "authors": [
+    "David Munksgaard <dmu@anthillagency.com>"
+  ],
+  "description": "Website for NoiseJewelry.com",
+  "main": "index.html",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}

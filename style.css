@@ -1,0 +1,163 @@
+body{
+	font-family: 'Open Sans', sans-serif;
+	background: url('img/bg.png');
+	background-size:     cover;                      /* <------ */
+    background-repeat:   no-repeat;
+    background-position: center center
+}
+.menu ul{
+	list-style-type: none;
+	margin-top: 18px;
+}
+.menu ul li{
+	float left:
+	font-family: Calibri;
+	font-size: 18px;
+	font-weight: 900;
+	color: #000;
+}
+.menu ul li a{
+	color: #000;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+.logo img{
+	width: 100%;
+	max-width: 200px;
+}
+.signup-box{
+	background: #ff6250;
+	color: #fff;
+	padding: 10px 30px;
+	text-align: center;
+	font-weight: bold;
+	font-family: Calibri;
+	max-width: 300px;
+}
+.signup-box h3{
+	font-size: 30px;
+	margin: 0;
+}
+.signup-box h2{
+	font-size: 60px;
+	margin: 0;
+	line-height: 60px;
+}
+.signup-box p{
+	max-width: 200px;
+	margin: 0 auto;
+}
+form.mail-chimp{
+	margin: 30px 0px;
+}
+form.mail-chimp input{
+	width: 100%;
+	padding: 5px;
+	margin: 3px;
+	color: #000;
+	border: none;
+}
+form.mail-chimp input::placeholder{
+	color: #000;
+	font-family: Calibri;
+	font-size: 16;
+}
+form.mail-chimp input.submit{
+	height: 60px;
+	background: #000;
+	color: #fff;
+	font-size: 24px;
+	margin: 30px 0px 0px;
+}
+.value-prop{
+	font-size: 17px;
+	margin: 20px 0px;
+	font-weight: bold;
+	color: white;
+	max-width: 300px;
+	text-align: left;
+	float: left;
+}
+span.value-prop{
+	margin-right: 5px;
+}
+ul.social{
+	list-style-type: none;
+	text-align: left;
+	margin-left: 10px;
+}
+ul.social li{
+	float: left;
+	margin: 0 1px;
+}
+.twitter{
+	background: url('img/social-sprite.png') no-repeat 0 0;
+	width: 46px;
+	height: 47px;
+}
+.insta {
+	background: url('img/social-sprite.png') no-repeat -47px 0;
+	width: 46px;
+	height: 47px;
+}
+.linkedin {
+	background: url('img/social-sprite.png') no-repeat -94px 0;
+	width: 48px;
+	height: 47px;
+}
+.fb {
+	background: url('img/social-sprite.png') no-repeat -143px 0;
+	width: 47px;
+	height: 47px;
+}
+.social-container{
+	max-width: 300px;
+}
+.mx-300-col{
+	max-width: 350px;
+	min-width: 342px;
+	overflow: hidden;
+}
+.film-canvas{
+	position: relative;
+	height: 100%;
+	max-height: 800px;
+	width: 360px;
+}
+.film{
+	position: absolute;
+	bottom: 20px;
+	width: 350px;
+	z-index: 2
+}
+.play{
+	position: absolute;
+	bottom: 130px;
+    z-index: 2;
+    right: 130px;
+}
+.play img{
+	text-align: center;
+    margin: 0 auto;
+    display: block;
+}
+.film-bg{
+	position: absolute;
+	height: 328px;
+	width: 350px;
+	bottom: 35px;
+	right: -20px;
+	background: #ff6250;
+	z-index: 1;
+}
+@media only screen and (max-width: 1126px) {
+	.film{
+		top: 10px;
+	}
+	.film-bg{
+		top:0;
+	}
+	.play{
+		top:130px;
+	}
+}
