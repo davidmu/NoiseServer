@@ -1,9 +1,7 @@
 fs = require 'fs'
+convert = require('imagemagick');
 maker = require 'makerjs'
 ProgressBar = require "progress"
-convert = require 'convert-svg-to-jpeg'
-AudioContext = require('web-audio-api').AudioContext
-bar = new ProgressBar('Analyze: [:bar] :percent :etas', { total: 100 })
 AudioDataAnalyzer = require('./../../library/audioDataAnalyzer').analyzer
 path = require 'path'
 getData = (fpath,cb)->
@@ -64,13 +62,12 @@ module.exports = (Design)->
       options = {
         strokeWidth: 20
       }
+      console.log "this is where it breaks"
       svg = maker.exporter.toSVG(coordinates,options)
-      convert.convert(svg)
-      .then (buffer)->
-        console.log "JPEGS"
-        fs.writeFile './tmp/storage/designs/'+soundName+'.jpg', buffer, (err, status)->
-          console.log "RUNNNNING CALLBACK"
-          cb null, soundName+'.jpg'
+      console.log "when making svg"
+      fs.writeFile './tmp/storage/designs/'+soundName+'.svg', svg, (err, status)->
+        convert.convert ['./tmp/storage/designs/'+soundName+'.svg','-transparent white', './tmp/storage/designs/'+soundName+'.png'], (err, out)->
+          cb null, soundName+'.png'
 
   Design.remoteMethod 'generateDesign',
     accepts:
