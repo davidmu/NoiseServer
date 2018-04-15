@@ -4,9 +4,12 @@ var loopback = require('loopback');
 var boot = require('loopback-boot');
 require('coffee-script/register');
 var app = module.exports = loopback();
-
+var router = app.loopback.Router();
+router.get('/', app.loopback.status());
+  
 app.start = function() {
   // start the web server
+  app.use(router);
   return app.listen(function() {
     app.emit('started');
     var baseUrl = app.get('url').replace(/\/$/, '');

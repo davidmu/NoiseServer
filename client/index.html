@@ -42,6 +42,45 @@
         left: 193px;
         bottom: -3px;
       }
+      body{
+        background: url('img/bg.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      .step{
+        background: #d4d1c5;
+        padding: 40px;
+        opacity: 0.8;
+        margin-top: 40px;
+      }
+      .step ol{
+        margin-left: 30px;
+        padding: 0;
+      }
+      .step a{
+        text-align: center;
+        margin:0 5px;
+      }
+      .step .pendant{
+        position: absolute;
+        right: 50px;
+        top: 0;
+        width: 120px;
+      }
+      .step .actions{
+        margin: 50px auto 10px;
+        display: block;
+        width: 150px
+      }
+      .step p{
+        margin: 0;
+      }
+      .design{
+        width: 90px;
+        position: absolute;
+        right: 65px;
+        top: 134px;
+      }
     </style>
   </head>
 
@@ -51,31 +90,64 @@
         <header><img src="" class="logo"/></header>
       </div>
       <div class="row">
-        <div class="col-md-4 offset-md-6" ng-show="state==='initial'">
+        <div class="col-md-4 offset-md-6 step" ng-show="state==='initial'">
+          <div class="row">
+          <div class="col-md-12">
           <b>Tell your story</b>
+        </div>
           <ol>
             <li>Record/upload your sound</li>
             <li>Approve the wave</li>
             <li>Get your code</li>
           </ol>
-          <a><i class="fas fa-microphone fa-2x"></i></a>
-          <a><i class="fas fa-cloud-upload-alt fa-2x"></i></a>
+          <img src="img/pendant.png" class="pendant"/>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="actions">
+          <a ng-click="setRecord()"><i  class="fas fa-microphone fa-2x"></i></a>
+          <a ng-click="setUpload()"><i class="fas fa-cloud-upload-alt fa-2x"></i></a>
+            </div>
+          </div>
+          <br/>
           <p>Click to <b>record/upload</b> on the pendant</p>
+          </div>
         </div>
-        <div class="col-md-4 offset-md-6" ng-show="state==='initial'">
+        <div class="col-md-4 offset-md-6 step" ng-show="state==='record'">
+          <ng-audio-recorder id='audioInput' audio-model='recordedInput' on-conversion-complete="method()" on-record-start="console.log('horse')" on-record-complete="$parent.recordingComplete(recorder)">
           <p><b>Share your story</b><br/>
             Click to record
           </p>
           
-          <a><i class="fas fa-circle fa-4x record"></i></a>
-          <a><i class="fas fa-play fa-4x record"></i></a>
+          <a ng-click="recorder.startRecord()" type="button" ng-hide="recorder.status.isRecording"><i class="fas fa-circle fa-4x record"></i></a>
+
+          <a ng-click="recorder.stopRecord()" type="button" ng-hide="recorder.status.isRecording === false"><i class="fas fa-play fa-4x record"></i></a>
+          <a ng-click="recorder.playbackRecording()" type="button"
+                    ng-disabled="recorder.status.isRecording || !recorder.audioModel"><i class="fas fa-play fa-4x record"></i></a>
           <p>Click to <b>record/upload</b> on the pendant</p>
-          <div>
+          </ng-audio-recorder>
+          <img src="img/pendant.png" class="pendant"/>
           <input placeholder="Email" class="emailSendBox"/><a ng-click="horse()">
           <i class="fas fa-caret-right fa-3x send"></i></a>
         </div>
       </div>
-        <div class="col-md-4 offset-md-6" ng-show="state==='initial'">
+        <div class="col-md-4 offset-md-6 step" ng-show="state==='upload'">
+          <p><b>Share your story</b><br/>
+            Click to upload
+          </p>
+          
+          <a type="file" ngf-select="uploadFiles($file, $invalidFiles)"
+          accept="*/*" ngf-max-height="1000" ngf-max-size="10MB"><i class="fas fa-upload fa-3x"></i></a>
+          <a><i class="fas fa-play fa-3x"></i></a>
+          <img src="img/pendant.png" class="pendant"/>
+          <img ng-show="designReady" class="design" src="{{imgsrc}}" />
+          <p>Click to <b>record/upload</b> on the pendant</p>
+          <div>
+            <input placeholder="Email" class="emailSendBox"/><a ng-click="horse()">
+            <i class="fas fa-caret-right fa-3x send"></i></a>
+          </div>
+        </div>
+        <div class="col-md-4 offset-md-6 step" ng-show="state==='receipt'">
           <p><b>Share your story</b><br/>
             Click to upload
           </p>
@@ -88,7 +160,7 @@
             <i class="fas fa-caret-right fa-3x send"></i></a>
           </div>
         </div>
-        <div class="col-md-4 offset-md-6" ng-show="state==='initial'">
+        <div class="col-md-4 offset-md-6" >
           <ng-audio-recorder id='audioInput' audio-model='recordedInput' on-conversion-complete="method()" on-record-start="console.log('horse')" on-record-complete="$parent.recordingComplete(recorder)">
           <!-- Start controls, exposed via recorder-->
           <div ng-if="recorder.isAvailable">
@@ -176,9 +248,18 @@
         console.log("Horse");
       }
       $scope.state = 'initial';
+      $scope.designReady = false;
+      $scope.setRecord = function(){
+        $scope.state= 'record'
+        console.log("setting state");
+      }
+      $scope.setUpload = function(){
+        $scope.state= 'upload'
+      }
       $scope.generateDesign = function(file){
         $http.get('api/designs/generateDesign/'+ file.name).then(function(res){
           if(res.data){
+            $scope.designReady = true;
             console.log(res.data)
             $scope.imgsrc = "/api/containers/designs/download/"+res.data
           }
@@ -195,6 +276,7 @@
         	        file.result = response.data;
                   console.log(response.data.result.files);
         	        $scope.file = response.data.result.files.file[0];
+                  $scope.generateDesign($scope.file);
         	    }, function (response) {
         	        if (response.status > 0)
         	            $scope.errorMsg = response.status + ': ' + response.data;
