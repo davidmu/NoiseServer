@@ -52,12 +52,12 @@ module.exports = (Design)->
           end: [x2,y2]
         } 
         coordinates.push obj
-      ###circle1={
+      circle1={
         type: "circle",
         origin: [1050,1050],
         radius: 1050
       }
-      coordinates.push circle1###
+      coordinates.push circle1
     
       options = {
         strokeWidth: 20
