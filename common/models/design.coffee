@@ -36,10 +36,11 @@ module.exports = (Design)->
       while newDataPoints.length isnt 72 
         newDataPoints.pop()
       for peak, index in newDataPoints
-        newDataPoints[index] = peak*6
+        newDataPoints[index] = peak*2
+        if newDataPoints[index] is 0
+          newDataPoints[index] = Math.Random()*12
         if newDataPoints[index] > 500
           newDataPoints[index] = 500
-      console.log newDataPoints
       coordinates = []
       for datapoint, index in newDataPoints
         x1 = 1050 + ((300)*Math.cos(index*0.0872665))
@@ -52,13 +53,12 @@ module.exports = (Design)->
           end: [x2,y2]
         } 
         coordinates.push obj
-      ###circle1={
+      circle1={
         type: "circle",
         origin: [1050,1050],
         radius: 1050
       }
-      coordinates.push circle1###
-    
+      coordinates.push circle1
       options = {
         strokeWidth: 20
       }

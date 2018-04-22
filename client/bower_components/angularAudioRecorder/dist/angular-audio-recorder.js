@@ -70,9 +70,6 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
       return $scope.$apply(fn);
     }
   };
-  console.log("Scope in controller");
-  console.log($scope); 
-  scopeApply($scope.onConversionComplete);
   var control = this,
     cordovaMedia = {
       recorder: null,
@@ -80,6 +77,7 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
       player: null
     }, timing = null,
     audioObjId = 'recorded-audio-' + control.id,
+
     status = {
       isRecording: false,
       playback: PLAYBACK.STOPPED,
@@ -98,7 +96,7 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
     },
     shouldConvertToMp3 = angular.isDefined(control.convertMp3) ? !!control.convertMp3 : service.shouldConvertToMp3(),
     mp3Converter = shouldConvertToMp3 ? new MP3Converter(service.getMp3Config()) : null;
-  ;
+    control.onConversionStart = $scope.complete;
 
 
   control.timeLimit = control.timeLimit || 0;
@@ -195,10 +193,8 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
         status.isConverting = false;
         if (successCallback) {
           successCallback(mp3Blob);
+          control.onConversionStart(mp3Blob);
         }
-        console.log("Should be applying");
-        console.log(control.onConversionComplete);
-        scopeApply(control.onConversionComplete);
       }, function () {
         status.isConverting = false;
       });
@@ -306,6 +302,7 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
       var finalize = function (inputBlob) {
         control.audioModel = inputBlob;
         embedPlayer(inputBlob);
+        console.log(control);
       };
 
       if (shouldConvertToMp3) {
@@ -315,8 +312,11 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
       }
 
       embedPlayer(null);
+      console.log("Is this right");
+      console.log(control);
       if(control.onRecordComplete){
-        control.onRecordComplete();
+        console.log("should call complete now");
+        control.onRecordComplete(control.audioModel);
       }
     };
 
@@ -575,29 +575,28 @@ angular.module('angularAudioRecorder.directives')
     function (recorderService, $timeout) {
       return {
         restrict: 'EA',
-        scope: {
+        bindToController: {
           audioModel: '=',
           id: '@',
           onRecordStart: '&',
-          onRecordComplete: '&',
+          onRecordComplete: '=',
           onPlaybackComplete: '&',
           onPlaybackStart: '&',
           onPlaybackPause: '&',
           onPlaybackResume: '&',
-          onConversionStart: '&',
-          onConversionComplete: '&',
+          onConversionStart: '=',
+          onConversionComplete: '=',
           showPlayer: '=?',
           autoStart: '=?',
           convertMp3: '=?',
           timeLimit: '=?'
         },
         controllerAs: 'recorder',
-        bindToController: true,
         template: function (element, attrs) {
           return '<div class="audioRecorder">' +
             '<div style="width: 250px; margin: 0 auto;"><div id="audioRecorder-fwrecorder"></div></div>' +
             element.html() +
-            '</div><a ng-click="onConversionComplete()">Testing</a>';
+            '</div>';
         },
         controller: 'recorderController',
         link: function (scope, element, attrs) {

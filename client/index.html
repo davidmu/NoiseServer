@@ -114,7 +114,7 @@
           </div>
         </div>
         <div class="col-md-4 offset-md-6 step" ng-show="state==='record'">
-          <ng-audio-recorder id='audioInput' audio-model='recordedInput' on-conversion-complete="method()" on-record-start="console.log('horse')" on-record-complete="$parent.recordingComplete(recorder)">
+          <ng-audio-recorder id='audioInput' audio-model='recordedInput' on-conversion-start="complete" on-record-start="console.log('horse')">
           <p><b>Share your story</b><br/>
             Click to record
           </p>
@@ -127,6 +127,7 @@
           <p>Click to <b>record/upload</b> on the pendant</p>
           </ng-audio-recorder>
           <img src="img/pendant.png" class="pendant"/>
+          <img ng-show="designReady" class="design" src="{{imgsrc}}" />
           <input placeholder="Email" class="emailSendBox"/><a ng-click="horse()">
           <i class="fas fa-caret-right fa-3x send"></i></a>
         </div>
@@ -160,9 +161,9 @@
             <i class="fas fa-caret-right fa-3x send"></i></a>
           </div>
         </div>
-        <div class="col-md-4 offset-md-6" >
-          <ng-audio-recorder id='audioInput' audio-model='recordedInput' on-conversion-complete="method()" on-record-start="console.log('horse')" on-record-complete="$parent.recordingComplete(recorder)">
-          <!-- Start controls, exposed via recorder-->
+        <!--<div class="col-md-4 offset-md-6" >
+          <ng-audio-recorder id='audioInput' audio-model='recordedInput' on-conversion-complete="" on-record-start="console.log('horse')" on-record-complete="recordingComplete(recorder)">
+          Start controls, exposed via recorder
           <div ng-if="recorder.isAvailable">
             <button ng-click="recorder.startRecord()" type="button" ng-disabled="recorder.status.isRecording">
                 Start Record
@@ -181,7 +182,7 @@
           <div ng-if="!recorder.isAvailable">
             Message for users when recording is not possible.
           </div>
-          <!-- End controls-->
+           End controls
         </ng-audio-recorder>
       	<button type="file" ngf-select="uploadFiles($file, $invalidFiles)"
           accept="*/*" ngf-max-height="1000" ngf-max-size="10MB">
@@ -202,7 +203,7 @@
       <div class="col-md-4">
         <img style="width:100%;" src="{{imgsrc}}" />
       </div>
-      </div>
+      </div>-->
     </div>
 
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
@@ -286,11 +287,17 @@
         	    });
         	}   
    			}
-        $scope.method= function(){
+        $scope.complete= function(data){
           console.log("For goooodnes sake");
+          console.log($scope.recordedInput);
+          if(data){
+            data.name = "temp1.mp3"
+            $scope.uploadFiles(data);
+          }
         }
         $scope.recordingComplete = function(data){
           console.log("Horse");
+          console.log($scope.recordedInput);
           console.log(data);
         }
         $scope.generateDesignFromRecord = function(){
