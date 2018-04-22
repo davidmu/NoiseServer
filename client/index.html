@@ -173,48 +173,6 @@
             <i class="fas fa-caret-right fa-3x send"></i></a>
           </div>
         </div>
-          <div ng-if="recorder.isAvailable">
-            <button ng-click="recorder.startRecord()" type="button" ng-disabled="recorder.status.isRecording">
-                Start Record
-            </button>
-            <button ng-click="recorder.stopRecord()" type="button" ng-disabled="recorder.status.isRecording === false">
-                Stop Record
-            </button>
-            <button ng-click="recorder.playbackRecording()" type="button"
-                    ng-disabled="recorder.status.isRecording || !recorder.audioModel">
-                Play Back
-            </button>
-            <button ng-click="recorder.save()" ng-disabled="recorder.status.isRecording || !recorder.audioModel">
-                Download
-            </button>
-          </div>       
-          <div ng-if="!recorder.isAvailable">
-            Message for users when recording is not possible.
-          </div>
-           End controls
-        </ng-audio-recorder>
-        <div style="">
-      	<button type="file" ngf-select="uploadFiles($file, $invalidFiles)"
-          accept="*/*" ngf-max-height="1000" ngf-max-size="10MB">
-      Select File</button>
-  <br><br>
-  File:
-  <div style="font:smaller">{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}
-      <span class="progress" ng-show="f.progress >= 0">
-          <div style="width:{{f.progress}}%"  
-               ng-bind="f.progress + '%'"></div>
-      </span>
-    </div> 
-    </div>  
-      <div class="col-md-4" ng-show="file.name">
-        <p>{{file.name}}</p>
-        <button ng-click="generateDesign(file)"> Get design </button>
-      </div>
-      <div class="col-md-4">
-        <img style="width:100%;" src="{{imgsrc}}" />
-      </div>
-      </div>
-
     </div>
 
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
@@ -273,7 +231,7 @@
           if(res.data){
             $scope.designReady = true;
             console.log(res.data)
-            $scope.imgsrc = "/api/containers/designs/download/"+res.data
+            $scope.imgsrc = "/api/containers/noise-design-storage/download/"+res.data
           }
         });
       }
@@ -282,7 +240,7 @@
         	$scope.errFile = errFiles && errFiles[0];
         	if (file){
         	    file.upload = Upload.upload({
-        	        url: 'api/containers/designs/upload',
+        	        url: 'api/containers/noise-design-storage/upload',
         	        data: {file: file}
         	    }).then(function (response) {
         	        file.result = response.data;

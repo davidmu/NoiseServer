@@ -21,12 +21,14 @@
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^5.0.0",
     "loopback-component-storage": "^3.3.1",
+    "loopback-connector-mongodb": "^3.4.3",
     "makerjs": "^0.9.86",
     "node-svg2img": "^1.0.0",
     "serve-favicon": "^2.0.1",
     "strong-error-handler": "^2.0.0",
     "svg2png": "^4.1.1",
     "svgexport": "^0.3.2",
+    "uuid": "^3.2.1",
     "web-audio-api": "^0.2.2"
   },
   "devDependencies": {

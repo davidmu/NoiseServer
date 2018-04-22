@@ -1,0 +1,310 @@
+{
+  "name": "DesignEntry",
+  "plural": "DesignEntries",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "designPath": {
+      "type": "string",
+      "required": true
+    },
+    "soundPath": {
+      "type": "string"
+    },
+    "dataEntry1": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry2": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry3": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry4": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry5": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry6": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry7": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry8": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry9": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry10": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry11": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry12": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry13": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry14": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry15": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry16": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry17": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry18": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry19": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry20": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry21": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry22": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry23": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry24": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry25": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry26": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry27": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry28": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry29": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry30": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry31": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry32": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry33": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry34": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry35": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry36": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry37": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry38": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry39": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry40": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry41": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry42": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry43": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry44": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry45": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry46": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry47": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry48": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry49": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry50": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry51": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry52": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry53": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry54": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry55": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry56": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry57": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry58": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry59": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry60": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry61": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry62": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry63": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry64": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry65": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry66": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry67": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry68": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry69": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry70": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry71": {
+      "type": "number",
+      "required": true
+    },
+    "dataEntry72": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

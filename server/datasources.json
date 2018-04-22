@@ -6,7 +6,14 @@
   "myfile": {
     "name": "myfile",
     "connector": "loopback-component-storage",
-  	"provider": "filesystem",
-  	"root": "./tmp/storage"
+    "provider": "amazon",
+    "key": "yoTO00zXJ62ba4w+0QQK3dYp2hR8sAt8lA+D5jss",
+    "keyId": "AKIAIP74NXZZVUHGHC5A"
+  },
+  "mongo": {
+    "host": "127.0.0.1",
+    "database": "NoiseDesign",
+    "name": "mongo",
+    "connector": "mongodb"
   }
 }

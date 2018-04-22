@@ -3,6 +3,8 @@ convert = require('imagemagick');
 maker = require 'makerjs'
 ProgressBar = require "progress"
 AudioDataAnalyzer = require('./../../library/audioDataAnalyzer').analyzer
+AWS = require('aws-sdk')
+AWS.config.update({ accessKeyId: 'AKIAIP74NXZZVUHGHC5A', secretAccessKey: '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' })
 path = require 'path'
 getData = (fpath,cb)->
   options={
@@ -13,8 +15,8 @@ getData = (fpath,cb)->
   audioDataAnalyzer.setDetectFormat(options.detectFormat)
   console.log path.resolve(fpath)
   audioDataAnalyzer.getPeaks fpath, options.peaksAmount, (error, peaks)->
-    console.log error
-    console.log peaks
+    #console.log error
+    #console.log peaks
     cb peaks
 
 module.exports = (Design)->
@@ -38,15 +40,15 @@ module.exports = (Design)->
       for peak, index in newDataPoints
         newDataPoints[index] = peak*2
         if newDataPoints[index] is 0
-          newDataPoints[index] = Math.Random()*12
-        if newDataPoints[index] > 500
-          newDataPoints[index] = 500
+          newDataPoints[index] = Math.random()*12
+        if newDataPoints[index] > 200
+          newDataPoints[index] = 200
       coordinates = []
       for datapoint, index in newDataPoints
-        x1 = 1050 + ((300)*Math.cos(index*0.0872665))
-        y1 = 1050 + ((300)*Math.sin(index*0.0872665))
-        x2 = 1050 + ((300+(datapoint))*Math.cos(index*0.0872665))
-        y2 = 1050 + ((300+(datapoint))*Math.sin(index*0.0872665))
+        x1 = 350 + ((100)*Math.cos(index*0.0872665))
+        y1 = 350 + ((100)*Math.sin(index*0.0872665))
+        x2 = 350 + ((100+(datapoint))*Math.cos(index*0.0872665))
+        y2 = 350 + ((100+(datapoint))*Math.sin(index*0.0872665))
         obj= {
           type:"line"
           origin: [x1,y1]
@@ -55,21 +57,30 @@ module.exports = (Design)->
         coordinates.push obj
       circle1={
         type: "circle",
-        origin: [1050,1050],
-        radius: 1050
+        origin: [350,350],
+        radius: 350
       }
       coordinates.push circle1
       options = {
-        strokeWidth: 20
+        strokeWidth: 8
       }
-      console.log "this is where it breaks"
+      container = Design.app.models.container
       svg = maker.exporter.toSVG(coordinates,options)
-      console.log "when making svg"
       fs.writeFile './tmp/storage/designs/'+soundName+'.svg', svg, (err, status)->
         console.log err
         convert.convert ['./tmp/storage/designs/'+soundName+'.svg','-transparent', 'white', './tmp/storage/designs/'+soundName+'.png'], (err, out)->
-          console.log err
-          cb null, soundName+'.png'
+          fs.readFile './tmp/storage/designs/'+soundName+'.png', (err,data)->
+            s3 = new AWS.S3()
+            base64data = new Buffer data, 'binary'
+            s3.upload {
+              Bucket: 'noise-design-storage',
+              Key: soundName+'.png',
+              Body: base64data,
+              ACL: 'public-read'
+            },(resp)->
+              console.log(arguments);
+              console.log('Successfully uploaded package.');
+              cb null, soundName+'.png'
 
   Design.remoteMethod 'generateDesign',
     accepts:
