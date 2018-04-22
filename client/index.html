@@ -4,6 +4,7 @@
     <title>AngularJS Routing example</title>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <style>
       body {
         background-color: #F5F5F5;
@@ -39,8 +40,8 @@
       }
       .send{
         position: absolute;
-        left: 193px;
-        bottom: -3px;
+    left: 107px;
+    bottom: 19px;
       }
       body{
         background: url('img/bg.jpg');
@@ -76,10 +77,19 @@
         margin: 0;
       }
       .design{
-        width: 90px;
+        width: 115px;
+    position: absolute;
+    right: 52px;
+    top: 120px;
+      }
+      .logo{
         position: absolute;
-        right: 65px;
-        top: 134px;
+    left: 20px;
+    top: 15px;
+    width: 100px;
+      }
+      .uploadHeader{
+        margin: 80px 0 30px !important;
       }
     </style>
   </head>
@@ -87,7 +97,7 @@
   <body ng-app="sampleApp">
     <div ng-controller="mainController">
       <div class="row">
-        <header><img src="" class="logo"/></header>
+        <header><img src="img/log.png" class="logo"/></header>
       </div>
       <div class="row">
         <div class="col-md-4 offset-md-6 step" ng-show="state==='initial'">
@@ -121,7 +131,7 @@
           
           <a ng-click="recorder.startRecord()" type="button" ng-hide="recorder.status.isRecording"><i class="fas fa-circle fa-4x record"></i></a>
 
-          <a ng-click="recorder.stopRecord()" type="button" ng-hide="recorder.status.isRecording === false"><i class="fas fa-play fa-4x record"></i></a>
+          <a ng-click="recorder.stopRecord()" type="button" ng-hide="recorder.status.isRecording === false"><i class="fas fa-stop fa-4x record"></i></a>
           <a ng-click="recorder.playbackRecording()" type="button"
                     ng-disabled="recorder.status.isRecording || !recorder.audioModel"><i class="fas fa-play fa-4x record"></i></a>
           <p>Click to <b>record/upload</b> on the pendant</p>
@@ -129,11 +139,12 @@
           <img src="img/pendant.png" class="pendant"/>
           <img ng-show="designReady" class="design" src="{{imgsrc}}" />
           <input placeholder="Email" class="emailSendBox"/><a ng-click="horse()">
+
           <i class="fas fa-caret-right fa-3x send"></i></a>
         </div>
       </div>
         <div class="col-md-4 offset-md-6 step" ng-show="state==='upload'">
-          <p><b>Share your story</b><br/>
+          <p class="uploadHeader"><b>Share your story</b><br/>
             Click to upload
           </p>
           
@@ -141,10 +152,10 @@
           accept="*/*" ngf-max-height="1000" ngf-max-size="10MB"><i class="fas fa-upload fa-3x"></i></a>
           <a><i class="fas fa-play fa-3x"></i></a>
           <img src="img/pendant.png" class="pendant"/>
-          <img ng-show="designReady" class="design" src="{{imgsrc}}" />
+          <img ng-show="designReady" class="design" ng-class="{'animated zoomIn': designReady}" src="{{imgsrc}}" />
           <p>Click to <b>record/upload</b> on the pendant</p>
           <div>
-            <input placeholder="Email" class="emailSendBox"/><a ng-click="horse()">
+            <input placeholder="Email" class="emailSendBox"/><a class="send" ng-click="horse()">
             <i class="fas fa-caret-right fa-3x send"></i></a>
           </div>
         </div>
@@ -155,15 +166,13 @@
           
           <a><i class="fas fa-upload fa-3x"></i></a>
           <a><i class="fas fa-play fa-3x"></i></a>
+          <br/>
           <p>Click to <b>record/upload</b> on the pendant</p>
           <div>
             <input placeholder="Email" class="emailSendBox"/><a ng-click="horse()">
             <i class="fas fa-caret-right fa-3x send"></i></a>
           </div>
         </div>
-        <!--<div class="col-md-4 offset-md-6" >
-          <ng-audio-recorder id='audioInput' audio-model='recordedInput' on-conversion-complete="" on-record-start="console.log('horse')" on-record-complete="recordingComplete(recorder)">
-          Start controls, exposed via recorder
           <div ng-if="recorder.isAvailable">
             <button ng-click="recorder.startRecord()" type="button" ng-disabled="recorder.status.isRecording">
                 Start Record
@@ -184,6 +193,7 @@
           </div>
            End controls
         </ng-audio-recorder>
+        <div style="">
       	<button type="file" ngf-select="uploadFiles($file, $invalidFiles)"
           accept="*/*" ngf-max-height="1000" ngf-max-size="10MB">
       Select File</button>
@@ -203,7 +213,8 @@
       <div class="col-md-4">
         <img style="width:100%;" src="{{imgsrc}}" />
       </div>
-      </div>-->
+      </div>
+
     </div>
 
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
