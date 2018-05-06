@@ -174,7 +174,7 @@
           </div>
         </div>
     </div>
-
+    <script src="http://wzrd.in/standalone/uuid%2Fv4@latest"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-route.min.js"></script>
     <script src="bower_components/angularAudioRecorder/dist/angular-audio-recorder.js"></script>
@@ -236,11 +236,12 @@
         });
       }
 			$scope.uploadFiles = function(file, errFiles) {
-        	$scope.f = file;
+        	file.name = uuidv4() +'.mp3'
+          $scope.f = file;
         	$scope.errFile = errFiles && errFiles[0];
         	if (file){
         	    file.upload = Upload.upload({
-        	        url: 'api/containers/noise-design-storage/upload',
+        	        url: 'api/LocalContainers/designs/upload',
         	        data: {file: file}
         	    }).then(function (response) {
         	        file.result = response.data;
@@ -260,7 +261,7 @@
           console.log("For goooodnes sake");
           console.log($scope.recordedInput);
           if(data){
-            data.name = "temp1.mp3"
+            data.name = uuidv4() +'.mp3'
             $scope.uploadFiles(data);
           }
         }

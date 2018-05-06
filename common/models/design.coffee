@@ -6,6 +6,7 @@ AudioDataAnalyzer = require('./../../library/audioDataAnalyzer').analyzer
 AWS = require('aws-sdk')
 AWS.config.update({ accessKeyId: 'AKIAIP74NXZZVUHGHC5A', secretAccessKey: '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' })
 path = require 'path'
+
 getData = (fpath,cb)->
   options={
     peaksAmount: 200,
@@ -18,13 +19,14 @@ getData = (fpath,cb)->
     #console.log error
     #console.log peaks
     cb peaks
-
 module.exports = (Design)->
+  #DesignEntry = Design.app.models.DesignEntry
   Design.generateDesign = (soundName, cb)->
     getData './tmp/storage/designs/'+soundName, (peaks)->
       chunkSize = Math.floor(peaks.length/72)
       i = 0
       sum = 0
+      designEntry = {}
       newDataPoints = []
       for datapoint, index in peaks
         if datapoint < 0
@@ -44,7 +46,9 @@ module.exports = (Design)->
         if newDataPoints[index] > 200
           newDataPoints[index] = 200
       coordinates = []
+      designEntry = {}
       for datapoint, index in newDataPoints
+        designEntry["dataEntry"+(index+1)]
         x1 = 350 + ((100)*Math.cos(index*0.0872665))
         y1 = 350 + ((100)*Math.sin(index*0.0872665))
         x2 = 350 + ((100+(datapoint))*Math.cos(index*0.0872665))
@@ -64,10 +68,9 @@ module.exports = (Design)->
       options = {
         strokeWidth: 8
       }
-      container = Design.app.models.container
+      basePath = "https://s3-eu-west-1.amazonaws.com/noise-design-storage/"
       svg = maker.exporter.toSVG(coordinates,options)
       fs.writeFile './tmp/storage/designs/'+soundName+'.svg', svg, (err, status)->
-        console.log err
         convert.convert ['./tmp/storage/designs/'+soundName+'.svg','-transparent', 'white', './tmp/storage/designs/'+soundName+'.png'], (err, out)->
           fs.readFile './tmp/storage/designs/'+soundName+'.png', (err,data)->
             s3 = new AWS.S3()
@@ -80,7 +83,21 @@ module.exports = (Design)->
             },(resp)->
               console.log(arguments);
               console.log('Successfully uploaded package.');
+              designEntry.designPath = basePath + soundName.png
+              designEntry.soundPath = basePath + soundName.png
               cb null, soundName+'.png'
+          fs.readFile './tmp/storage/designs/'+soundName, (err,data)->
+            s3 = new AWS.S3()
+            base64data = new Buffer data, 'binary'
+            s3.upload {
+              Bucket: 'noise-design-storage',
+              Key: soundName,
+              Body: base64data,
+              ACL: 'public-read'
+            },(resp)->
+              console.log(arguments);
+              console.log('Successfully uploaded package.');
+
 
   Design.remoteMethod 'generateDesign',
     accepts:

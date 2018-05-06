@@ -49,5 +49,9 @@
   "DesignEntry": {
     "dataSource": "mongo",
     "public": true
+  },
+  "LocalContainer": {
+    "dataSource": "storage",
+    "public": true
   }
 }

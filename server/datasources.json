@@ -15,5 +15,11 @@
     "database": "NoiseDesign",
     "name": "mongo",
     "connector": "mongodb"
+  },
+  "storage": {
+    "name": "storage",
+    "connector": "loopback-component-storage",
+    "provider": "filesystem",
+    "root": "./tmp/storage"
   }
 }
