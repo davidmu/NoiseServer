@@ -13,6 +13,9 @@
       "./mixins"
     ]
   },
+  "Email": {
+    "dataSource": "email"
+  },
   "User": {
     "dataSource": "db"
   },

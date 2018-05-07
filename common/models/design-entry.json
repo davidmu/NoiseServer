@@ -14,9 +14,6 @@
     "soundPath": {
       "type": "string"
     },
-    "soundPath": {
-      "type": "string"
-    },
     "dataEntry1": {
       "type": "number",
       "required": true

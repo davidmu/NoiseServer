@@ -4,6 +4,7 @@ maker = require 'makerjs'
 ProgressBar = require "progress"
 AudioDataAnalyzer = require('./../../library/audioDataAnalyzer').analyzer
 AWS = require('aws-sdk')
+loopback = require 'loopback'
 AWS.config.update({ accessKeyId: 'AKIAIP74NXZZVUHGHC5A', secretAccessKey: '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' })
 path = require 'path'
 
@@ -46,9 +47,10 @@ module.exports = (Design)->
         if newDataPoints[index] > 200
           newDataPoints[index] = 200
       coordinates = []
+      DesignEntry = Design.app.models.DesignEntry
       designEntry = {}
       for datapoint, index in newDataPoints
-        designEntry["dataEntry"+(index+1)]
+        designEntry["dataEntry"+(index+1)] = Math.round(100+datapoint)
         x1 = 350 + ((100)*Math.cos(index*0.0872665))
         y1 = 350 + ((100)*Math.sin(index*0.0872665))
         x2 = 350 + ((100+(datapoint))*Math.cos(index*0.0872665))
@@ -81,11 +83,12 @@ module.exports = (Design)->
               Body: base64data,
               ACL: 'public-read'
             },(resp)->
-              console.log(arguments);
-              console.log('Successfully uploaded package.');
-              designEntry.designPath = basePath + soundName.png
-              designEntry.soundPath = basePath + soundName.png
-              cb null, soundName+'.png'
+              designEntry.designPath = basePath + soundName+'.png'
+              designEntry.soundPath = basePath + soundName
+              DesignEntry.create designEntry, (err, design)->
+                console.log design
+                console.log err
+                cb null, design
           fs.readFile './tmp/storage/designs/'+soundName, (err,data)->
             s3 = new AWS.S3()
             base64data = new Buffer data, 'binary'
@@ -95,8 +98,8 @@ module.exports = (Design)->
               Body: base64data,
               ACL: 'public-read'
             },(resp)->
-              console.log(arguments);
-              console.log('Successfully uploaded package.');
+              console.log arguments
+              console.log 'Successfully uploaded package.'
 
 
   Design.remoteMethod 'generateDesign',
@@ -106,10 +109,48 @@ module.exports = (Design)->
     returns:[
       {
         arg: 'design'
-        type: 'file'
+        type: 'DesignEntry'
         root: true
       }
     ]
     http:
       path: '/generateDesign/:soundName'
+      verb: 'get'
+
+  Design.sendEmail = (id, email, cb)->
+    Design.app.models.DesignEntry.findById id, (err, designEntry)->
+      renderer = loopback.template(path.resolve(__dirname, './../../server/views/mail.ejs'))
+      html = renderer({
+        id: id
+        img:designEntry.designPath
+      })
+      Design.app.models.Email.send {
+          to: email
+          from: "info@noisejewelry.com"
+          subject: 'Check out you design'
+          html: html
+        }, (err) ->
+          if err
+            console.log err
+            console.log '> sending booking confirmation Email to:', email
+  Design.remoteMethod 'sendEmail',
+    accepts:[
+      {
+        arg: 'id'
+        type: 'string'
+      },
+      {
+        arg: 'email'
+        type: 'string'
+      }
+    ]
+    returns:[
+      {
+        arg: 'design'
+        type: 'DesignEntry'
+        root: true
+      }
+    ]
+    http:
+      path: '/sendEmail/:id/:email'
       verb: 'get'

@@ -231,7 +231,7 @@
           if(res.data){
             $scope.designReady = true;
             console.log(res.data)
-            $scope.imgsrc = "/api/containers/noise-design-storage/download/"+res.data
+            $scope.imgsrc = res.data.designPath
           }
         });
       }

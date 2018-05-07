@@ -21,5 +21,21 @@
     "connector": "loopback-component-storage",
     "provider": "filesystem",
     "root": "./tmp/storage"
+  },
+  "email": {
+    "name": "email",
+    "connector": "mail",
+    "transports": [
+      {
+        "type": "SMTP",
+        "host": "smtp.sendgrid.net",
+        "secure": false,
+        "port": 587,
+        "auth": {
+          "user": "apikey",
+          "pass": "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"
+        }
+      }
+    ]
   }
 }
