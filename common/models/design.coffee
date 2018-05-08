@@ -133,6 +133,8 @@ module.exports = (Design)->
           if err
             console.log err
             console.log '> sending booking confirmation Email to:', email
+          cb null, designEntry
+  
   Design.remoteMethod 'sendEmail',
     accepts:[
       {

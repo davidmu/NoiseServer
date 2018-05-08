@@ -6,8 +6,9 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <style>
-      body {
+      html, body {
         background-color: #F5F5F5;
+        height: 100%;
       }
       header {
         background: #e3fcf6;
@@ -33,6 +34,7 @@
         border-radius: 3px; 
         padding: 3px;
         font-size: 20px;
+            width: 350px;
       }
       .emailSendBox:placeholder{
         color: #d5d5d5;
@@ -44,7 +46,7 @@
     bottom: 19px;
       }
       body{
-        background: url('img/bg.jpg');
+        background: url('img/Bronze-close-2.jpg');
         background-size: cover;
         background-repeat: no-repeat;
       }
@@ -125,8 +127,9 @@
         </div>
         <div class="col-md-4 offset-md-6 step" ng-show="state==='record'">
           <ng-audio-recorder id='audioInput' audio-model='recordedInput' on-conversion-start="complete" on-record-start="console.log('horse')">
-          <p><b>Share your story</b><br/>
-            Click to record
+          <p style="margin-bottom: 10px"><b>Share your story</b><br/><br/>
+            
+            Click the red button to record and the stop
           </p>
           
           <a ng-click="recorder.startRecord()" type="button" ng-hide="recorder.status.isRecording"><i class="fas fa-circle fa-4x record"></i></a>
@@ -134,20 +137,20 @@
           <a ng-click="recorder.stopRecord()" type="button" ng-hide="recorder.status.isRecording === false"><i class="fas fa-stop fa-4x record"></i></a>
           <a ng-click="recorder.playbackRecording()" type="button"
                     ng-disabled="recorder.status.isRecording || !recorder.audioModel"><i class="fas fa-play fa-4x record"></i></a>
-          <p>Click to <b>record/upload</b> on the pendant</p>
+          <p style="margin-top: 40px;">Click to <b>record/upload</b> on the pendant</p>
           </ng-audio-recorder>
           <img src="img/pendant.png" class="pendant"/>
           <img ng-show="designReady" class="design" src="{{imgsrc}}" />
-          <input placeholder="Email" class="emailSendBox"/><a ng-click="horse()">
+          <div>
+          <input placeholder="Email" class="emailSendBox"/><a class="send" ng-click="horse()">
 
-          <i class="fas fa-caret-right fa-3x send"></i></a>
+          <i class="fas fa-caret-right fa-3x"></i></a></div>
         </div>
       </div>
         <div class="col-md-4 offset-md-6 step" ng-show="state==='upload'">
           <p class="uploadHeader"><b>Share your story</b><br/>
             Click to upload
           </p>
-          
           <a type="file" ngf-select="uploadFiles($file, $invalidFiles)"
           accept="*/*" ngf-max-height="1000" ngf-max-size="10MB"><i class="fas fa-upload fa-3x"></i></a>
           <a><i class="fas fa-play fa-3x"></i></a>
@@ -214,9 +217,6 @@
 		    }
 		}]);
 		sampleApp.controller('mainController', function($scope, $http, Upload, $timeout) {
-      $scope.horse=function(){
-        console.log("Horse");
-      }
       $scope.state = 'initial';
       $scope.designReady = false;
       $scope.setRecord = function(){
@@ -232,6 +232,7 @@
             $scope.designReady = true;
             console.log(res.data)
             $scope.imgsrc = res.data.designPath
+            $scope.id = res.data.id
           }
         });
       }

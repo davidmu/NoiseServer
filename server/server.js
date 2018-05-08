@@ -6,7 +6,7 @@ require('coffee-script/register');
 var app = module.exports = loopback();
 var router = app.loopback.Router();
 router.get('/', app.loopback.status());
-  
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 app.start = function() {
   // start the web server
   app.use(router);
