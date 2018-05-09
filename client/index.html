@@ -42,8 +42,8 @@
       }
       .send{
         position: absolute;
-    left: 107px;
-    bottom: 19px;
+        bottom: -1px;
+        right: 0;
       }
       body{
         background: url('img/Bronze-close-2.jpg');
@@ -55,6 +55,7 @@
         padding: 40px;
         opacity: 0.8;
         margin-top: 40px;
+        min-height: 350px;
       }
       .step ol{
         margin-left: 30px;
@@ -89,6 +90,10 @@
     left: 20px;
     top: 15px;
     width: 100px;
+      }
+      .emailWrap{
+        position: relative;
+        width: fit-content;
       }
       .uploadHeader{
         margin: 80px 0 30px !important;
@@ -140,41 +145,38 @@
           <p style="margin-top: 40px;">Click to <b>record/upload</b> on the pendant</p>
           </ng-audio-recorder>
           <img src="img/pendant.png" class="pendant"/>
-          <img ng-show="designReady" class="design" src="{{imgsrc}}" />
-          <div>
-          <input placeholder="Email" class="emailSendBox"/><a class="send" ng-click="horse()">
+          <img ng-show="designReady" class="design" ng-class="{'animated zoomIn': designReady}" src="{{imgsrc}}" />
+          <div class="emailWrap">
+          <input placeholder="Email" class="emailSendBox"/><a class="send" ng-click="sendEmail()">
 
           <i class="fas fa-caret-right fa-3x"></i></a></div>
         </div>
       </div>
         <div class="col-md-4 offset-md-6 step" ng-show="state==='upload'">
-          <p class="uploadHeader"><b>Share your story</b><br/>
+          <p><b>Share your story</b><br/>
+            <br/>
             Click to upload
           </p>
           <a type="file" ngf-select="uploadFiles($file, $invalidFiles)"
           accept="*/*" ngf-max-height="1000" ngf-max-size="10MB"><i class="fas fa-upload fa-3x"></i></a>
-          <a><i class="fas fa-play fa-3x"></i></a>
+          <br/>
+          <br/>
           <img src="img/pendant.png" class="pendant"/>
           <img ng-show="designReady" class="design" ng-class="{'animated zoomIn': designReady}" src="{{imgsrc}}" />
-          <p>Click to <b>record/upload</b> on the pendant</p>
-          <div>
-            <input placeholder="Email" class="emailSendBox"/><a class="send" ng-click="horse()">
+          <p style="margin-top:50px;">Click to <b>record/upload</b> on the pendant</p>
+          <div class="emailWrap">
+            <input placeholder="Email" ng-model="email" class="emailSendBox"/><a class="send" ng-click="sendEmail()">
             <i class="fas fa-caret-right fa-3x send"></i></a>
           </div>
         </div>
-        <div class="col-md-4 offset-md-6 step" ng-show="state==='receipt'">
-          <p><b>Share your story</b><br/>
-            Click to upload
+        <div class="col-md-4 offset-md-6 step" ng-show="state==='thanks'">
+          <p><b>Thanks for your interest</b><br/>
+            An email has been sent to you including <br/>
+            your design and an ID by which to identify it.
           </p>
-          
-          <a><i class="fas fa-upload fa-3x"></i></a>
-          <a><i class="fas fa-play fa-3x"></i></a>
-          <br/>
-          <p>Click to <b>record/upload</b> on the pendant</p>
-          <div>
-            <input placeholder="Email" class="emailSendBox"/><a ng-click="horse()">
-            <i class="fas fa-caret-right fa-3x send"></i></a>
-          </div>
+          Read more about our project <a href="https://www.kickstarter.com/projects/193289139/532479960?ref=456342&token=e05c2651">here.</a>
+          <img src="img/pendant.png" class="pendant"/>
+          <img ng-show="designReady" class="design" ng-class="{'animated zoomIn': designReady}" src="{{imgsrc}}" />
         </div>
     </div>
     <script src="http://wzrd.in/standalone/uuid%2Fv4@latest"></script>
@@ -219,12 +221,20 @@
 		sampleApp.controller('mainController', function($scope, $http, Upload, $timeout) {
       $scope.state = 'initial';
       $scope.designReady = false;
+      $scope.id = undefined;
       $scope.setRecord = function(){
         $scope.state= 'record'
         console.log("setting state");
       }
       $scope.setUpload = function(){
         $scope.state= 'upload'
+      }
+      $scope.sendEmail = function(){
+        if($scope.id !== undefined){
+          $http.get('api/designs/sendEmail/'+ $scope.id + '/'+ $scope.email).then(function(res){
+            $scope.state = 'thanks'
+          });
+        }
       }
       $scope.generateDesign = function(file){
         $http.get('api/designs/generateDesign/'+ file.name).then(function(res){

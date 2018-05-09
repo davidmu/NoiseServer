@@ -24,6 +24,7 @@ module.exports = (Design)->
   #DesignEntry = Design.app.models.DesignEntry
   Design.generateDesign = (soundName, cb)->
     getData './tmp/storage/designs/'+soundName, (peaks)->
+      console.log peaks
       chunkSize = Math.floor(peaks.length/72)
       i = 0
       sum = 0
@@ -100,6 +101,12 @@ module.exports = (Design)->
             },(resp)->
               console.log arguments
               console.log 'Successfully uploaded package.'
+              fs.unlink './tmp/storage/designs/'+soundName, (err)->
+                console.log err
+              fs.unlink './tmp/storage/designs/'+soundName+'.png', (err)->
+                console.log err
+              fs.unlink './tmp/storage/designs/'+soundName+'.svg', (err)->
+                console.log err
 
 
   Design.remoteMethod 'generateDesign',
