@@ -657,6 +657,12 @@ angular.module('angularAudioRecorder.services')
               FWRecorder.recorderOriginalWidth = 1;
               FWRecorder.recorderOriginalHeight = 1;
               swfHandlerConfig.loaded = true;
+              if(!html5AudioProps.audioContext){
+                var AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext && !html5AudioProps.audioContext) {
+                  html5AudioProps.audioContext = new AudioContext();
+                }
+              }
               break;
 
             case "microphone_user_request":
@@ -797,6 +803,7 @@ angular.module('angularAudioRecorder.services')
         gotStream: function (stream) {
           var audioContext = html5AudioProps.audioContext;
           // Create an AudioNode from the stream.
+          audioContext.resume()
           html5AudioProps.audioInput = audioContext.createMediaStreamSource(stream);
           html5AudioProps.audioInput.connect((html5AudioProps.inputPoint = audioContext.createGain()));
 
@@ -893,6 +900,7 @@ angular.module('angularAudioRecorder.services')
       };
 
       service.getHandler = function () {
+        html5AudioProps.audioContext.resume()
         return handler;
       };
 

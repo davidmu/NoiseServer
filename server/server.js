@@ -7,17 +7,21 @@ var app = module.exports = loopback();
 var router = app.loopback.Router();
 router.get('/', app.loopback.status());
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+var https = require('https')
 app.start = function() {
-  // start the web server
-  app.use(router);
-  return app.listen(function() {
-    app.emit('started');
-    var baseUrl = app.get('url').replace(/\/$/, '');
-    console.log('Web server listening at: %s', baseUrl);
-    if (app.get('loopback-component-explorer')) {
-      var explorerPath = app.get('loopback-component-explorer').mountPath;
-      console.log('Browse your REST API at %s%s', baseUrl, explorerPath);
-    }
+  var sslConfig = require('./ssl/ssl-config.js');
+  var options = {
+    key: sslConfig.privateKey,
+    cert: sslConfig.certificate,
+    ca:[
+      sslConfig.intermediatecert
+    ]
+  };
+  var server = https.createServer(options, app);
+  server.listen(app.get('port'), function() {
+    var baseUrl = (true? 'http://' : 'https://') + app.get('host') + ':' + app.get('port');
+    app.emit('started', baseUrl);
+    console.log('LoopBack server listening @ %s%s', baseUrl, '/');
   });
 };
 
