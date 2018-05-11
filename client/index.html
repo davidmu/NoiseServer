@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <title>Design Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://netdna.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
@@ -82,9 +83,15 @@
       }
       .design{
         width: 115px;
-    position: absolute;
-    right: 52px;
-    top: 120px;
+        position: absolute;
+        right: 52px;
+        top: 120px;
+      }
+      .design-loader{
+        width: 50px;
+        position: absolute;
+        right: 82px;
+        top: 152px;
       }
       .logo{
         position: absolute;
@@ -147,7 +154,7 @@
           </ng-audio-recorder>
           <img src="img/pendant.png" class="pendant"/>
           <img ng-show="designReady" class="design" ng-class="{'animated zoomIn': designReady}" src="{{imgsrc}}" />
-          <img ng-show="showloader" class="design" src="img/Loading_icon.gif">
+          <img ng-show="showloader" class="design-loader" src="img/Loading_icon.gif">
           <div class="emailWrap">
           <input placeholder="Email" ng-model="email" class="emailSendBox"/><a class="send" ng-click="sendEmail()">
 
@@ -165,6 +172,7 @@
           <br/>
           <img src="img/pendant.png" class="pendant"/>
           <img ng-show="designReady" class="design" ng-class="{'animated zoomIn': designReady}" src="{{imgsrc}}" />
+          <img ng-show="showloader" class="design-loader" src="img/Loading_icon.gif">
           <p style="margin-top:50px;">Click to <b>record/upload</b> on the pendant</p>
           <div class="emailWrap">
             <input placeholder="Email" ng-model="email" class="emailSendBox"/><a class="send" ng-click="sendEmail()">

@@ -40,6 +40,11 @@
       ]
     }
   },
+  "initial:before": {
+    "loopback#favicon": {
+      "params": "./../img/favicon.png"
+    }
+  },
   "files": {
     "loopback#static": {
       "params": "$!../client"
