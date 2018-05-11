@@ -42,7 +42,7 @@
   },
   "initial:before": {
     "loopback#favicon": {
-      "params": "./../img/favicon.png"
+      "params": "./img/favicon.png"
     }
   },
   "files": {

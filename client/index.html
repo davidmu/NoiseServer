@@ -11,6 +11,11 @@
         background-color: #F5F5F5;
         height: 100%;
       }
+      .back{
+        position: absolute;
+        top: 10px;
+        left: 5px;
+      }
       header {
         background: #e3fcf6;
         height: 80px;
@@ -52,12 +57,14 @@
         background-repeat: no-repeat;
       }
       .step{
-        background: #d4d1c5;
+        background: rgb(212,209,197, 0.8);
         padding: 40px;
-        opacity: 0.8;
         margin-top: 40px;
         min-height: 350px;
         min-width: 430px;
+      }
+      .step p{
+        max-width:60%;
       }
       .step ol{
         margin-left: 30px;
@@ -74,9 +81,9 @@
         width: 120px;
       }
       .step .actions{
-        margin: 50px auto 10px;
         display: block;
-        width: 150px
+        width: 150px;
+        margin-top: 15px;
       }
       .step p{
         margin: 0;
@@ -106,6 +113,11 @@
       .uploadHeader{
         margin: 80px 0 30px !important;
       }
+      .btn{
+        background: #FE7E27;
+        color: white!important;
+        font-weight: bold;
+      }
     </style>
   </head>
 
@@ -129,16 +141,20 @@
           </div>
           <div class="row">
             <div class="col-md-12">
+              <p>Click to <b>record/upload</b> on the pendant</p>
               <div class="actions">
           <a class="btn goToRecord" ng-click="setRecord()">Record my sound</a>
+
+          <span style="text-align: center;display: block; margin: 10px auto; font-weight: bold;">OR</span>
+
           <a class="btn goToUpload" ng-click="setUpload()">Upload my sound</a>
             </div>
           </div>
           <br/>
-          <p>Click to <b>record/upload</b> on the pendant</p>
           </div>
         </div>
         <div class="col-md-4 offset-md-6 step" ng-show="state==='record'">
+          <a class="back" ng-click="back()"><i class="fas fa-arrow-left"></i></a>
           <ng-audio-recorder id='audioInput' audio-model='recordedInput' on-conversion-start="complete" on-record-start="console.log('horse')">
           <p style="margin-bottom: 10px"><b>Share your story</b><br/><br/>
             
@@ -150,18 +166,22 @@
           <a ng-click="recorder.stopRecord()" type="button" ng-hide="recorder.status.isRecording === false"><i class="fas fa-stop fa-4x record"></i></a>
           <a ng-click="recorder.playbackRecording()" type="button"
                     ng-disabled="recorder.status.isRecording || !recorder.audioModel"><i class="fas fa-play fa-4x record"></i></a>
-          <p style="margin-top: 40px;">Click to <b>record/upload</b> on the pendant</p>
+          <p>Click to <b>record/upload</b> on the pendant</p>
           </ng-audio-recorder>
           <img src="img/pendant.png" class="pendant"/>
           <img ng-show="designReady" class="design" ng-class="{'animated zoomIn': designReady}" src="{{imgsrc}}" />
           <img ng-show="showloader" class="design-loader" src="img/Loading_icon.gif">
+           <br/>
+          <p style="max-width:100%">Insert email and click the arrow to recieve design.</p>
           <div class="emailWrap">
           <input placeholder="Email" ng-model="email" class="emailSendBox"/><a class="send" ng-click="sendEmail()">
 
           <i class="fas fa-caret-right fa-3x"></i></a></div>
         </div>
       </div>
+     
         <div class="col-md-4 offset-md-6 step" ng-show="state==='upload'">
+           <a class="back" ng-click="back()"><i class="fas fa-arrow-left"></i></a>
           <p><b>Share your story</b><br/>
             <br/>
             Click to upload
@@ -173,7 +193,9 @@
           <img src="img/pendant.png" class="pendant"/>
           <img ng-show="designReady" class="design" ng-class="{'animated zoomIn': designReady}" src="{{imgsrc}}" />
           <img ng-show="showloader" class="design-loader" src="img/Loading_icon.gif">
-          <p style="margin-top:50px;">Click to <b>record/upload</b> on the pendant</p>
+          <p >Click to <b>record/upload</b> on the pendant</p>
+          <br/>
+          <p style="max-width:100%">Insert email and click the arrow to recieve design.</p>
           <div class="emailWrap">
             <input placeholder="Email" ng-model="email" class="emailSendBox"/><a class="send" ng-click="sendEmail()">
             <i class="fas fa-caret-right fa-3x send"></i></a>
@@ -232,6 +254,9 @@
       $scope.state = 'initial';
       $scope.designReady = false;
       $scope.id = undefined;
+      $scope.back = function(){ 
+        $scope.state = 'initial';
+      }
       $scope.setRecord = function(){
         $scope.state= 'record'
         console.log("setting state");
